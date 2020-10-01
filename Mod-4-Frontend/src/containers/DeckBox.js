@@ -5,6 +5,11 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Deck from '../components/Deck';
 import { makeStyles } from '@material-ui/core/styles';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Card from '@material-ui/core/Card';
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -87,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
   },
   fixedHeight: {
     height: 250,
-  },
+  }
 }));
 
 const DeckBox = (props) => {
@@ -96,23 +101,40 @@ const DeckBox = (props) => {
 
     return (
         <main className={classes.content}>
-            <div className={classes.appBarSpacer} />
-                <Container maxWidth="lg" className={classes.container}>
-                    <Grid container spacing={3}>
-                        {
-                            props.decks.map(deck => 
-                                <Grid key={deck.id} item xs={12} md={4} lg={3}>
-                                    <Paper
-                                      onClick={()=>{props.setTab('DeckList'); props.setDeck(deck.id)}} 
-                                      className={fixedHeightPaper}
-                                    >        
-                                      <Deck deck={deck}/>
-                                    </Paper>
-                                </Grid>
-                            )
-                        }
+          <div className={classes.appBarSpacer} />
+            <Container maxWidth="lg" className={classes.container}>
+              <Grid container spacing={3}>
+                {
+                  props.decks.map(deck => 
+                    <Grid key={deck.id} item xs={12} md={4} lg={3}>
+                      <Paper
+                        elevation={3}
+                        onClick={()=>{
+                          props.setDeck(deck.id)
+                          props.setCurrentDeckList(props.fetchCards(props.decks[deck.id-1].deck_cards))
+                          props.setTab('DeckList');
+                          }
+                        } 
+                        className={fixedHeightPaper}
+                      > 
+                        <Card>
+                          <CardActionArea>
+                            <CardMedia
+                              className={classes.media}
+                              image="/static/images/cards/contemplative-reptile.jpg"
+                              title="Contemplative Reptile"
+                            />
+                            <CardContent>
+                              <Deck deck={deck}/>
+                            </CardContent>
+                          </CardActionArea>
+                        </Card>
+                      </Paper>
                     </Grid>
-                </Container>
+                  )
+                }
+              </Grid>
+            </Container>
         </main>
     );
 }

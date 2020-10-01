@@ -7,7 +7,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
 import Paper from '@material-ui/core/Paper';
-import { Container } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 
 const drawerWidth = 240;
 
@@ -91,38 +92,51 @@ const useStyles = makeStyles((theme) => ({
   },
   fixedHeight: {
     height: 250,
-  },
+  }
 }));
 const DeckList = (props)=> {
   const classes = useStyles();
+
   return (
-    <Container className={classes.container}>
+    <React.Fragment>
+    <Grid container className={classes.container}>
+      <Grid item lg>
       <Paper>               
-          <Title>Recent Orders</Title>
-          <Table size="medium">
-            <TableHead>
+        <Title>Recent Orders</Title>
+        <Table size="medium">
+          <TableHead>
+            <TableRow>
+              <TableCell>Delete</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Type</TableCell>
+              <TableCell>Mana Cost</TableCell>
+              <TableCell>Rarity</TableCell>
+              <TableCell align="right">Total Price</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.currentDeckList.map((card) => (
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Type</TableCell>
-                <TableCell>Mana Cost</TableCell>
-                <TableCell>Rarity</TableCell>
-                <TableCell align="right">Total Price</TableCell>
+                <TableCell><Button onClick={()=>props.removeFromDeck(card.id)}>X</Button></TableCell>
+                <TableCell
+                  onMouseEnter={()=>props.setImage(card.image_url)}
+                  onMouseLeave={()=>props.setImage(props.magicBack)}
+                >
+                  {card.name}
+                </TableCell>
+                <TableCell>{card.cardtype}</TableCell>
+                <TableCell>{card.mana_cost}</TableCell>
+                <TableCell>{card.rarity}</TableCell>
+                
               </TableRow>
-            </TableHead>
-            <TableBody>
-              {props.currentDeckList.map((card) => (
-                <TableRow>
-                  <TableCell>{card.name}</TableCell>
-                  <TableCell>{card.cardtype}</TableCell>
-                  <TableCell>{card.mana_cost}</TableCell>
-                  <TableCell>{card.rarity}</TableCell>
-                  {/* <TableCell align="right">{`$${card.amount}`}</TableCell> */}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+            ))}
+          </TableBody>
+        </Table>
       </Paper>
-    </Container>
+      </Grid>
+    </Grid>
+  </React.Fragment>
+    
   );
 }
 

@@ -15,9 +15,10 @@ import MainListItems from './MainListItems';
 import DeckBox from '../containers/DeckBox';
 import Search from '../containers/Search';
 import DeckList from '../components/DeckList';
+import Grid from '@material-ui/core/Grid'
 
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,6 +101,13 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 250,
   },
+  cardImage: {
+    height: '380.16px',
+    width: '272.16px',
+    borderRadius: '15px',
+    marginTop: 15,
+    marginLeft: 15
+  }
 }));
 
 const Dashboard = ()=>{
@@ -117,6 +125,8 @@ const Dashboard = ()=>{
   const [decks,setDecks] = React.useState([]);
   const [currentDeckList,setCurrentDeckList] = React.useState([])
   const [selectedDeck,setDeck] = React.useState(1)
+  const magicBack = 'https://c1.scryfall.com/file/scryfall-card-backs/large/59/597b79b3-7d77-4261-871a-60dd17403388.jpg?1561757283'
+  const [imageShown,setImage] = React.useState(magicBack)
 
   React.useEffect(() => {
       const fetchDecks = () => {
@@ -124,15 +134,25 @@ const Dashboard = ()=>{
       .then(res=>res.json())
       .then(deckCollection=> {
         setDecks(deckCollection);
-        setCurrentDeckList(deckCollection[0].cards)
         })
       }
       fetchDecks();
     },[count]
   )
+
+  const fetchCards = (deck_cards) => {
+    let deckList = []
+    deck_cards.map(deck_card=> 
+    fetch(`http://localhost:3001/cards/${deck_card.card_id}`)
+    .then(res=>res.json())
+    .then(fetchedCard => deckList.push(fetchedCard))
+    )
+    console.log(deckList)
+    return deckList
+  }
    
   const addToDeck = (id)=>{
-    const list = [...currentDeckList]
+    const decksUpdate = [...decks]
     fetch('http://localhost:3001/deck_cards',{
       method: 'POST',
       body: JSON.stringify({deck_id: selectedDeck, card_id: id}),
@@ -142,21 +162,39 @@ const Dashboard = ()=>{
     })
     .then(res => res.json())
     .then(deck_card => {
-      list.push(deck_card)
-      setCurrentDeckList(list)
+      decks[selectedDeck-1].cards.push(deck_card)
+      console.log(decks)
+      setDecks(decksUpdate)
       }
     )
   }
 
+  const removeFromDeck = (id)=>{
+    fetch(`http://localhost:3001/deck_cards/35`,{
+      method: 'DELETE',
+      body: JSON.stringify({deck_id: selectedDeck, card_id: id}),
+      headers: {
+        "Content-type": "application/json"
+      }
+    })
+  }
 
   const renderView = () => {
     let showTab = ''
     switch(tab){
-      case "Decks": showTab = <DeckBox decks={decks} setTab={setTab} setDeck={setDeck}/>
+      case "Decks": showTab = <DeckBox decks={decks} setTab={setTab} setDeck={setDeck} setCurrentDeckList={setCurrentDeckList} fetchCards={fetchCards}/>
       break;
       case "Search": showTab = <Search setDeck={setDeck} selectedDeck={selectedDeck} addToDeck={addToDeck}/>
       break;
-      case "DeckList": showTab = <DeckList selectedDeck={selectedDeck} decks={decks} currentDeckList={currentDeckList}/>
+      case "DeckList": 
+        showTab = <DeckList 
+                    setImage={setImage} 
+                    magicBack={magicBack} 
+                    selectedDeck={selectedDeck} 
+                    decks={decks} 
+                    currentDeckList={currentDeckList} 
+                    removeFromDeck={removeFromDeck} 
+                  />
       break;
       default:
       break;
@@ -210,9 +248,12 @@ const Dashboard = ()=>{
         <Divider />
         <List>
           < MainListItems changeTab={changeTab}/>
-          </List>
+        </List>
         <Divider />
-      </Drawer>
+          <Grid>
+            <img className={classes.cardImage} src={imageShown} />
+          </Grid>
+        </Drawer>
       <main className={classes.content}>
 
           {renderView()}

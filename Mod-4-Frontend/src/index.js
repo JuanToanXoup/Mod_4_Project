@@ -4,13 +4,13 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
-import DeckBox from './containers/DeckBox'
+import SignInSide from './containers/SignInSide'
 
 ReactDOM.render((
   <Router>
     <div>
-      <Route path="/" component={Dashboard} />
-      <Route path='/decks' component={DeckBox} />
+      <Route exact path="/dashboard" component={Dashboard} />
+      <Route exact path='/login' component={SignInSide} />
     </div>
   </Router>),
   document.getElementById('root')

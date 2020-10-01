@@ -50,27 +50,6 @@ const SearchBar = (props) => {
             <form noValidate autoComplete="off">
                 <Grid container spacing={1} className={classes.searchBar}>
                     <TextField onChange={(e)=>props.setTerm(e.currentTarget.value)}className={classes.form} id="outlined-basic" label="Search Term ..." variant="outlined" />
-                    <FormGroup aria-label="position" row>
-                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
-                        value="name"
-                        control={<Checkbox color="primary" />}
-                        label="Name"
-                        labelPlacement="bottom"
-                        />
-                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
-                        value="type"
-                        control={<Checkbox color="primary" />}
-                        label="Type"
-                        labelPlacement="bottom"
-                        color='primary'
-                        />
-                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
-                        value="text"
-                        control={<Checkbox color="primary" />}
-                        label="Text"
-                        labelPlacement="bottom"
-                        />
-                    </FormGroup>
                     <FormControl variant="outlined" className={classes.form}>
                         <InputLabel htmlFor="outlined-deck-native-simple"></InputLabel>
                         <Select
@@ -92,7 +71,61 @@ const SearchBar = (props) => {
                             }
                         </Select>
                     </FormControl>
-                    <Button onClick={props.filterCards} className={classes.submitButton} variant="outlined">Submit</Button>
+                </Grid>
+                    <FormGroup aria-label="position" row>
+                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
+                            value="name"
+                            control={<Checkbox color="primary" />}
+                            label="Name"
+                            labelPlacement="bottom"
+                        />
+                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
+                            value="type"
+                            control={<Checkbox color="primary" />}
+                            label="Type"
+                            labelPlacement="bottom"
+                            color='primary'
+                        />
+                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
+                            value="text"
+                            control={<Checkbox color="primary" />}
+                            label="Text"
+                            labelPlacement="bottom"
+                        />
+                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
+                            value="white"
+                            control={<Checkbox color="primary" />}
+                            label="White"
+                            labelPlacement="bottom"
+                        />
+                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
+                            value="blue"
+                            control={<Checkbox color="primary" />}
+                            label="Blue"
+                            labelPlacement="bottom"
+                            color='primary'
+                        />
+                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
+                            value="black"
+                            control={<Checkbox color="primary" />}
+                            label="Black"
+                            labelPlacement="bottom"
+                        />
+                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
+                            value="red"
+                            control={<Checkbox color="primary" />}
+                            label="Red"
+                            labelPlacement="bottom"
+                        />
+                        <FormControlLabel onChange={(e)=>props.setCheck(e.currentTarget.value)}
+                            value="green"
+                            control={<Checkbox color="primary" />}
+                            label="Green"
+                            labelPlacement="bottom"
+                        />
+                    </FormGroup>
+                <Grid>
+
                 </Grid>
             </form>
         </Container>

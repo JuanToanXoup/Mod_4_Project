@@ -13,12 +13,13 @@ const Deck = (props) => {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Title>{props.deck.name}</Title>
+      
       <Typography component="p" variant="h4">
-        {props.deck.colors}
+        {props.deck.name}
       </Typography>
+      <Title>{props.deck.colors}</Title>
       <Typography color="textSecondary" className={classes.depositContext}>
-        on 15 March, 2019
+        Made on 30 September, 2020
       </Typography>
     </React.Fragment>
   );

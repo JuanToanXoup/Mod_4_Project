@@ -89,29 +89,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Search = (props) => {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const count = ''
-    const [cards,setCards] = React.useState([]);
-    const [filteredCards,setFilter] = React.useState([]);
-    const [searchTerm, setSearchTerm] = React.useState('');
-    const [nameCheck, setNameCheck] = React.useState(false);
-    const [textCheck, setTextCheck] = React.useState(false);
-    const [typeCheck, setTypeCheck] = React.useState(false);
+  const count = ''
+  const [cards,setCards] = React.useState([]);
+  const [filteredCards,setFilter] = React.useState([]);
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [nameCheck, setNameCheck] = React.useState(false);
+  const [textCheck, setTextCheck] = React.useState(false);
+  const [typeCheck, setTypeCheck] = React.useState(false);
+  const [blueCheck, setBlueCheck] = React.useState(false);
+  const [blackCheck, setBlackCheck] = React.useState(false);
+  const [greenCheck, setGreenCheck] = React.useState(false);
+  const [whiteCheck, setWhiteCheck] = React.useState(false);
+  const [redCheck, setRedCheck] = React.useState(false);
 
 
 
-    React.useEffect(() => {
-        const fetchCards = () => {
-            fetch(`http://localhost:3001/cards`)
-        .then(res=>res.json())
-        .then(cardCollection=> setCards(cardCollection))
-        }
-        fetchCards();
-        },[count]
-    )
+  React.useEffect(() => {
+    const fetchCards = () => {
+      fetch(`http://localhost:3001/cards`)
+    .then(res=>res.json())
+    .then(cardCollection=> setCards(cardCollection))
+    }
+    fetchCards();
+    },[count]
+  )
 
-    React.useEffect(()=>{
+  React.useEffect(()=>{
     filterCards();
     },[searchTerm])
     React.useEffect(()=>{
@@ -123,58 +128,115 @@ const Search = (props) => {
     React.useEffect(()=>{
     filterCards();
     },[typeCheck])
+    React.useEffect(()=>{
+    filterCards();
+    },[blueCheck])
+    React.useEffect(()=>{
+    filterCards();
+    },[blackCheck])
+    React.useEffect(()=>{
+    filterCards();
+    },[greenCheck])
+    React.useEffect(()=>{
+    filterCards();
+    },[redCheck])
+    React.useEffect(()=>{
+    filterCards();
+    },[whiteCheck])
 
-    const filterCards = ()=>{
-        let nameFilter = []
-        let textFilter = []
-        let typeFilter = []
-        if(nameCheck){nameFilter = cards.filter(card => card.name.toLowerCase().includes(searchTerm.toLowerCase()))}
-        if(textCheck){textFilter = cards.filter(card => card.text !== null).filter(card => card.text.toLowerCase().includes(searchTerm.toLowerCase()))}
-        if(typeCheck){typeFilter = cards.filter(card => card.type !== null).filter(card => card.cardtype.toLowerCase().includes(searchTerm.toLowerCase()))}
-        setFilter( [...new Set([...nameFilter,...textFilter,...typeFilter])] )
+  const filterCards = ()=>{
+    let filteredArray = cards;
+    let nameFilter = []; let textFilter = []
+    let typeFilter = []; let blueFilter = []
+    let blackFilter = []; let greenFilter = []
+    let whiteFilter = []; let redFilter = []
+    if(nameCheck){
+      nameFilter = cards.filter(card => card.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      filteredArray = filteredArray.filter(value => nameFilter.includes(value))
     }
-
-    const setTerm = (term) => {
-        console.log(term)
-        setSearchTerm(term)
+    if(textCheck){
+      textFilter = cards.filter(card => card.text !== null).filter(card => card.text.toLowerCase().includes(searchTerm.toLowerCase()))
+      filteredArray = filteredArray.filter(value => textFilter.includes(value))
     }
-
-    const setCheck = (checkbox) => {
-        switch(checkbox){
-            case 'name': setNameCheck(!nameCheck)
-                break;
-            case 'text': setTextCheck(!textCheck)
-                break;
-            case 'type': setTypeCheck(!typeCheck)
-                break;
-            default:
-                break;
-        }
+    if(typeCheck){
+      typeFilter = cards.filter(card => card.type !== null).filter(card => card.cardtype.toLowerCase().includes(searchTerm.toLowerCase()))
+      filteredArray = filteredArray.filter(value => typeFilter.includes(value))
     }
+    if(blueCheck){
+      blueFilter = cards.filter(card => card.colors.includes("Blue"))
+      filteredArray = filteredArray.filter(value => blueFilter.includes(value))
+    }
+    if(blackCheck){
+      blackFilter = cards.filter(card => card.colors.includes("Black"))
+      filteredArray = filteredArray.filter(value => blackFilter.includes(value))
+    }
+    if(greenCheck){
+      greenFilter = cards.filter(card => card.colors.includes("Green"))
+      filteredArray = filteredArray.filter(value => greenFilter.includes(value))
+    }
+    if(whiteCheck){
+      whiteFilter = cards.filter(card => card.colors.includes("White"))
+      filteredArray = filteredArray.filter(value => whiteFilter.includes(value))
+    }
+    if(redCheck){
+      redFilter = cards.filter(card => card.colors.includes("Red"))
+      filteredArray = filteredArray.filter(value => redFilter.includes(value))
+    }
+    setFilter( filteredArray )
+  }
 
-    return (
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-          <Container maxWidth="lg" className={classes.container}>
-            <SearchBar 
-              setDeck={props.setDeck} 
-              selectedDeck={props.selectedDeck} 
-              setTerm={setTerm} 
-              setCheck={setCheck} 
-              className={classes.searchBar}
-            />
-            <Grid container spacing={1}>
-              {
-                filteredCards.map(card => 
-                  <Grid onClick={()=>props.addToDeck(card.id)} key={card.id} item xs={12} md={4} lg={3}>
-                    <MagicCard  card={card}/>
-                  </Grid>
-                )
-              }
-            </Grid>
-          </Container>
-      </main>
-    );
+  const setTerm = (term) => {
+      console.log(term)
+      setSearchTerm(term)
+  }
+
+  const setCheck = (checkbox) => {
+    switch(checkbox){
+      case 'name': setNameCheck(!nameCheck)
+        break;
+      case 'text': setTextCheck(!textCheck)
+        break;
+      case 'type': setTypeCheck(!typeCheck)
+        break;
+      case 'blue': setBlueCheck(!blueCheck)
+        break;
+      case 'black': setBlackCheck(!blackCheck)
+        break;
+      case 'green': setGreenCheck(!greenCheck)
+        break;
+      case 'white': setWhiteCheck(!whiteCheck)
+        break;
+      case 'red': setRedCheck(!redCheck)
+        break;
+      default:
+        break;
+    }
+  }
+
+  return (
+    <main className={classes.content}>
+      <div className={classes.appBarSpacer} />
+      <Container maxWidth="lg" className={classes.container}>
+        <SearchBar 
+          filterCards={filterCards}
+          setDeck={props.setDeck} 
+          selectedDeck={props.selectedDeck} 
+          setTerm={setTerm} 
+          setCheck={setCheck} 
+          className={classes.searchBar}
+        />
+        <Grid container spacing={1}>
+          {
+            filteredCards.map(card => 
+              <Grid onClick={()=>props.addToDeck(card.id)} key={card.id} item xs={12} md={4} lg={3}>
+                <MagicCard  card={card}/>
+              </Grid>
+            )
+          }
+        </Grid>
+      </Container>
+    </main>
+  );
 }
 
 export default Search;

@@ -10,6 +10,12 @@ class DeckCardsController < ApplicationController
         deck_card.save
         render json: deck_card.card
     end
+
+    def destroy
+        delete_card = DeckCard.find_by(deck_card_params)
+        delete_card.destroy
+        render json: delete_card
+    end
     
     private
     def find_deck_card
