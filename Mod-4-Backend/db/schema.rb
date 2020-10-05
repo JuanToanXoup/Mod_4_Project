@@ -30,6 +30,7 @@ ActiveRecord::Schema.define(version: 2022) do
     t.string "text"
     t.string "legalities"
     t.string "set_name"
+    t.float "price"
   end
 
   create_table "deck_cards", force: :cascade do |t|

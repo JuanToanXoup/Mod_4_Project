@@ -115,75 +115,51 @@ const Search = (props) => {
     fetchCards();
     },[count]
   )
-
-  React.useEffect(()=>{
-    filterCards();
-    },[searchTerm])
-    React.useEffect(()=>{
-    filterCards();
-    },[nameCheck])
-    React.useEffect(()=>{
-    filterCards();
-    },[textCheck])
-    React.useEffect(()=>{
-    filterCards();
-    },[typeCheck])
-    React.useEffect(()=>{
-    filterCards();
-    },[blueCheck])
-    React.useEffect(()=>{
-    filterCards();
-    },[blackCheck])
-    React.useEffect(()=>{
-    filterCards();
-    },[greenCheck])
-    React.useEffect(()=>{
-    filterCards();
-    },[redCheck])
-    React.useEffect(()=>{
-    filterCards();
-    },[whiteCheck])
-
-  const filterCards = ()=>{
-    let filteredArray = cards;
-    let nameFilter = []; let textFilter = []
-    let typeFilter = []; let blueFilter = []
-    let blackFilter = []; let greenFilter = []
-    let whiteFilter = []; let redFilter = []
-    if(nameCheck){
-      nameFilter = cards.filter(card => card.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      filteredArray = filteredArray.filter(value => nameFilter.includes(value))
-    }
-    if(textCheck){
-      textFilter = cards.filter(card => card.text !== null).filter(card => card.text.toLowerCase().includes(searchTerm.toLowerCase()))
-      filteredArray = filteredArray.filter(value => textFilter.includes(value))
-    }
-    if(typeCheck){
-      typeFilter = cards.filter(card => card.type !== null).filter(card => card.cardtype.toLowerCase().includes(searchTerm.toLowerCase()))
-      filteredArray = filteredArray.filter(value => typeFilter.includes(value))
-    }
-    if(blueCheck){
-      blueFilter = cards.filter(card => card.colors.includes("Blue"))
-      filteredArray = filteredArray.filter(value => blueFilter.includes(value))
-    }
-    if(blackCheck){
-      blackFilter = cards.filter(card => card.colors.includes("Black"))
-      filteredArray = filteredArray.filter(value => blackFilter.includes(value))
-    }
-    if(greenCheck){
-      greenFilter = cards.filter(card => card.colors.includes("Green"))
-      filteredArray = filteredArray.filter(value => greenFilter.includes(value))
-    }
-    if(whiteCheck){
-      whiteFilter = cards.filter(card => card.colors.includes("White"))
-      filteredArray = filteredArray.filter(value => whiteFilter.includes(value))
-    }
-    if(redCheck){
-      redFilter = cards.filter(card => card.colors.includes("Red"))
-      filteredArray = filteredArray.filter(value => redFilter.includes(value))
-    }
-    setFilter( filteredArray )
-  }
+  
+      React.useEffect(()=>{
+      const filterCards = ()=>{
+        let filteredArray = cards;
+        let nameFilter = []; let textFilter = []
+        let typeFilter = []; let blueFilter = []
+        let blackFilter = []; let greenFilter = []
+        let whiteFilter = []; let redFilter = []
+        if(nameCheck){
+          nameFilter = cards.filter(card => card.name.toLowerCase().includes(searchTerm.toLowerCase()))
+          filteredArray = filteredArray.filter(value => nameFilter.includes(value))
+        }
+        if(textCheck){
+          textFilter = cards.filter(card => card.text !== null).filter(card => card.text.toLowerCase().includes(searchTerm.toLowerCase()))
+          filteredArray = filteredArray.filter(value => textFilter.includes(value))
+        }
+        if(typeCheck){
+          typeFilter = cards.filter(card => card.type !== null).filter(card => card.cardtype.toLowerCase().includes(searchTerm.toLowerCase()))
+          filteredArray = filteredArray.filter(value => typeFilter.includes(value))
+        }
+        if(blueCheck){
+          blueFilter = cards.filter(card => card.colors.includes("Blue"))
+          filteredArray = filteredArray.filter(value => blueFilter.includes(value))
+        }
+        if(blackCheck){
+          blackFilter = cards.filter(card => card.colors.includes("Black"))
+          filteredArray = filteredArray.filter(value => blackFilter.includes(value))
+        }
+        if(greenCheck){
+          greenFilter = cards.filter(card => card.colors.includes("Green"))
+          filteredArray = filteredArray.filter(value => greenFilter.includes(value))
+        }
+        if(whiteCheck){
+          whiteFilter = cards.filter(card => card.colors.includes("White"))
+          filteredArray = filteredArray.filter(value => whiteFilter.includes(value))
+        }
+        if(redCheck){
+          redFilter = cards.filter(card => card.colors.includes("Red"))
+          filteredArray = filteredArray.filter(value => redFilter.includes(value))
+        }
+        setFilter( filteredArray )
+      }
+      filterCards();
+    },[searchTerm,nameCheck,textCheck,typeCheck,blueCheck,blackCheck,greenCheck,whiteCheck,redCheck]
+  )
 
   const setTerm = (term) => {
       console.log(term)
@@ -218,7 +194,6 @@ const Search = (props) => {
       <div className={classes.appBarSpacer} />
       <Container maxWidth="lg" className={classes.container}>
         <SearchBar 
-          filterCards={filterCards}
           setDeck={props.setDeck} 
           selectedDeck={props.selectedDeck} 
           setTerm={setTerm} 

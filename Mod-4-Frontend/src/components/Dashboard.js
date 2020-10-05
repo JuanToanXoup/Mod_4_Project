@@ -16,7 +16,7 @@ import DeckBox from '../containers/DeckBox';
 import Search from '../containers/Search';
 import DeckList from '../components/DeckList';
 import Grid from '@material-ui/core/Grid'
-
+import LogoImg from '../components/Logo.png';
 
 const drawerWidth = 300;
 
@@ -107,6 +107,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '15px',
     marginTop: 15,
     marginLeft: 15
+  },
+  logo: {
+    width: '240.16px'
   }
 }));
 
@@ -134,20 +137,19 @@ const Dashboard = ()=>{
       .then(res=>res.json())
       .then(deckCollection=> {
         setDecks(deckCollection);
+        setCurrentDeckList(fetchCards(deckCollection))
         })
       }
       fetchDecks();
-    },[count]
+    },[selectedDeck]
   )
 
-  const fetchCards = (deck_cards) => {
+  const fetchCards = (deckCollection) => {
     let deckList = []
-    deck_cards.map(deck_card=> 
-    fetch(`http://localhost:3001/cards/${deck_card.card_id}`)
-    .then(res=>res.json())
-    .then(fetchedCard => deckList.push(fetchedCard))
-    )
-    console.log(deckList)
+      deckCollection[selectedDeck-1].deck_cards.map(deck_card => 
+          deckCollection[selectedDeck-1].cards.map(card => 
+            card.id === deck_card.card_id ? deckList.push({card: card, deck_card: deck_card.id }) : null))
+            console.log(deckList)
     return deckList
   }
    
@@ -161,21 +163,28 @@ const Dashboard = ()=>{
       }
     })
     .then(res => res.json())
-    .then(deck_card => {
-      decks[selectedDeck-1].cards.push(deck_card)
-      console.log(decks)
+    .then(deckCardObj => {
+      decksUpdate[selectedDeck-1].deck_cards.push(deckCardObj.deck_card)
+      if(decksUpdate[selectedDeck-1].cards.filter(card=> card.id === deckCardObj.card.id).length === 0){
+        decksUpdate[selectedDeck-1].cards.push(deckCardObj.card)
+      }
+      setCurrentDeckList(fetchCards(decksUpdate))
       setDecks(decksUpdate)
       }
     )
   }
 
   const removeFromDeck = (id)=>{
-    fetch(`http://localhost:3001/deck_cards/35`,{
-      method: 'DELETE',
-      body: JSON.stringify({deck_id: selectedDeck, card_id: id}),
-      headers: {
-        "Content-type": "application/json"
-      }
+    const decksUpdate = [...decks]
+    fetch(`http://localhost:3001/deck_cards/${id}`,{
+      method: 'DELETE'
+    })
+    .then(res=>res.json())
+    .then(deletedDeckCard => {
+      let newDeckList = decks[selectedDeck-1].deck_cards.filter(deck_card => deck_card.id !== deletedDeckCard.id)
+      decksUpdate[selectedDeck-1].deck_cards = newDeckList
+      setCurrentDeckList(fetchCards(decksUpdate))
+      setDecks(decksUpdate)
     })
   }
 
@@ -241,6 +250,9 @@ const Dashboard = ()=>{
         open={open}
       >
         <div className={classes.toolbarIcon}>
+          <Grid>
+            <img className={classes.logo} src={LogoImg} />
+          </Grid>
           <IconButton onClick={toggleDrawer}>
             <ChevronLeftIcon />
           </IconButton>
@@ -255,9 +267,7 @@ const Dashboard = ()=>{
           </Grid>
         </Drawer>
       <main className={classes.content}>
-
-          {renderView()}
-          
+          {renderView()} 
       </main>
     </div>
   );

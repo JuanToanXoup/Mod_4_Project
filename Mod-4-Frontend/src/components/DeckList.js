@@ -111,23 +111,23 @@ const DeckList = (props)=> {
               <TableCell>Type</TableCell>
               <TableCell>Mana Cost</TableCell>
               <TableCell>Rarity</TableCell>
-              <TableCell align="right">Total Price</TableCell>
+              <TableCell>Price</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.currentDeckList.map((card) => (
+            {props.currentDeckList.map((cardObj) => (
               <TableRow>
-                <TableCell><Button onClick={()=>props.removeFromDeck(card.id)}>X</Button></TableCell>
+                <TableCell><Button onClick={()=>props.removeFromDeck(cardObj.deck_card)}>X</Button></TableCell>
                 <TableCell
-                  onMouseEnter={()=>props.setImage(card.image_url)}
+                  onMouseEnter={()=>props.setImage(cardObj.card.image_url)}
                   onMouseLeave={()=>props.setImage(props.magicBack)}
                 >
-                  {card.name}
+                  {cardObj.card.name}
                 </TableCell>
-                <TableCell>{card.cardtype}</TableCell>
-                <TableCell>{card.mana_cost}</TableCell>
-                <TableCell>{card.rarity}</TableCell>
-                
+                <TableCell>{cardObj.card.cardtype}</TableCell>
+                <TableCell>{cardObj.card.mana_cost}</TableCell>
+                <TableCell>{cardObj.card.rarity}</TableCell>
+                <TableCell>{cardObj.card.price}</TableCell>
               </TableRow>
             ))}
           </TableBody>

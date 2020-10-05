@@ -2,7 +2,7 @@ class DecksController < ApplicationController
 
     def index
         decks = Deck.all
-        render json: decks, include: [:deck_cards ]
+        render json: decks, include: [:deck_cards,:cards]
     end
     
     # def create

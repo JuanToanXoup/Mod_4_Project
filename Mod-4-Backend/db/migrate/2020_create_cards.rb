@@ -15,6 +15,7 @@ class CreateCards < ActiveRecord::Migration[5.2]
         t.string :text
         t.string :legalities
         t.string :set_name
+        t.float :price
       end
     end
   end

@@ -20,7 +20,8 @@ Deck.destroy_all
                 rarity: card.rarity,
                 text: card.text,
                 legalities: card.legalities.map{|format| format.format}.join(','),
-                set_name: card.set_name
+                set_name: card.set_name,
+                price: rand(0.01..20).round(2)
             })
         end
     end

@@ -111,7 +111,7 @@ const DeckBox = (props) => {
                         elevation={3}
                         onClick={()=>{
                           props.setDeck(deck.id)
-                          props.setCurrentDeckList(props.fetchCards(props.decks[deck.id-1].deck_cards))
+                          props.setCurrentDeckList(props.fetchCards(props.decks))
                           props.setTab('DeckList');
                           }
                         } 

@@ -8,18 +8,18 @@ class DeckCardsController < ApplicationController
     def create
         deck_card = DeckCard.new(deck_card_params)
         deck_card.save
-        render json: deck_card.card
+        render json: {deck_card: deck_card, card: deck_card.card}
     end
 
     def destroy
-        delete_card = DeckCard.find_by(deck_card_params)
+        delete_card = find_deck_card
         delete_card.destroy
         render json: delete_card
     end
     
     private
     def find_deck_card
-        deck = Deck.find(params[:id])
+        deck = DeckCard.find(params[:id])
     end
 
     def deck_card_params
